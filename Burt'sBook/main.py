@@ -3,15 +3,26 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import os.path
+import MySQLdb
 
 from tornado.options import define, options
 define("port", default=8000, help="run on given port", type=int)
 
 class Application(tornado.web.Application):
     def __init__(self):
+        try:
+            conn=MySQLdb.connect(host='localhost',user='root',passwd='qinxiangyu',db='spider',port=3306)
+            cur=conn.cursor()
+            count=cur.execute('select * from puahome_bbs limit 1')
+            results=cur.fetchall()
+            print type(results)
+            cur.close()
+            conn.close()
+        except MySQLdb.Error,e:
+            print "Mysql Error %d: %s" % (e.args[0], e.args[1]
         handlers=[
             (r"/", MainHandler),
-			(r"/recommended", RecommendedHandler),
+            (r"/recommended", RecommendedHandler),
         ]
         settings = dict(
             template_path=os.path.join(os.path.dirname(__file__),"templates"),
