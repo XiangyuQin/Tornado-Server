@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 import tornado.web
 import tornado.httpserver
 import tornado.ioloop
@@ -18,21 +19,41 @@ class Application(tornado.web.Application):
             template_path=os.path.join(os.path.dirname(__file__),"templates"),
             static_path=os.path.join(os.path.dirname(__file__),"static"),
             debug=True,
-            ui_modules={'Book': BookModule},
+            ui_modules={'Book': BookModule,'PptArticle':PptArticleModule},
         )
         tornado.web.Application.__init__(self, handlers, **settings)
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render(
-            "main.html",
-            page_title = "Burt's Books | Home",
-            header_text = "Welcome to Burt's Books!",
+            "index.html",
+            page_title = "About Love",
+            pptArticles=[
+                    {
+                        "title":"Programming Collective Intelligence",
+                        "image":"/static/images/website1.jpg",
+                        "theme":"主题1"
+                    },
+                    {
+                         "title":"Programming Collective Intelligence2",
+                         "image":"/static/images/website2.jpg",
+                         "theme":"主题2"
+                    },
+                    {
+                         "title":"Programming Collective Intelligence3",
+                         "image":"/static/images/website3.jpg",
+                         "theme":"主题3"
+                    },
+            ]
         )
 
 class BookModule(tornado.web.UIModule):
     def render(self, book):
         return self.render_string('modules/book.html', book=book)
+
+class PptArticleModule(tornado.web.UIModule):
+    def render(self, pptArticle):
+        return self.render_string('modules/pptArticle.html', pptArticle=pptArticle)
 
 class RecommendedHandler(tornado.web.RequestHandler):
     def get(self):

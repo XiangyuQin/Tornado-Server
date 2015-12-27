@@ -2,9 +2,9 @@ body {
 font-family: Helvetica,Arial,sans-serif;
 width: 600px;
 margin: 0 auto;
-color:red
+color:yellow
 }
-.test_len {
-	color:green
+h3 {
+	color:yellow
 }
 .replaced:hover { color: #00f; }
