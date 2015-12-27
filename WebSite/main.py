@@ -13,6 +13,7 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers=[
             (r"/", MainHandler),
+            (r"/list/(\w+)", ListHandler),
             (r"/recommended", RecommendedHandler),
         ]
         settings = dict(
@@ -23,11 +24,77 @@ class Application(tornado.web.Application):
         )
         tornado.web.Application.__init__(self, handlers, **settings)
 
+class ListHandler(tornado.web.RequestHandler):
+    def getArticles(self, theme_articles):
+        listArticle={}
+        for theme in theme_articles:
+            if (theme['type']==input[::-1]):
+                listArticle = theme['articles']
+        return listArticle
+
+    def get(self, input):
+        theme_articles=[
+            {
+                "type":0,
+                "articles":[
+                    {
+                        "title":"一个“好人”如何去挽回失去的爱情",
+                        "image":"/static/images/website4.jpg",
+                        "brief":"第一，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+                        "type_id":"0"
+                    },
+                ]
+            },
+            {
+                "type":1,
+                "articles":[
+                    {
+                        "title":"一个“好人”如何去挽回失去的爱情2",
+                        "image":"/static/images/website5.jpg",
+                        "brief":"第一，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+                        "type_id":"1"
+                    },
+                ]
+            },
+        ]
+        listArticle=getArticles(theme_articles)
+        self.render(
+            "list.html",
+        )
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render(
             "index.html",
             page_title = "About Love",
+            urls={
+                "list_url":"http://115.159.116.153:8000/list",
+                "article_url":"http://115.159.116.153:8000/article"
+            },
+            themes=[
+                    {
+                        "title":"精品文章",
+                        "theme_id":"0"
+                    },
+                    {
+                        "title":"精品文章2",
+                        "theme_id":"1"
+                    },
+            ],
+            listArticles=[
+                    {
+                        "title":"一个“好人”如何去挽回失去的爱情",
+                        "image":"/static/images/website4.jpg",
+                        "brief":"第一，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+                        "type_id":"0"
+                    },
+                    {
+                        "title":"一个“好人”如何去挽回失去的爱情2",
+                        "image":"/static/images/website5.jpg",
+                        "brief":" 第二，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+                        "type_id":"1"
+                    },
+            ],
             pptArticles=[
                     {
                         "title":"Programming Collective Intelligence",
