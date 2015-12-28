@@ -5,6 +5,7 @@ import tornado.ioloop
 import tornado.options
 import os.path
 import MySQLdb
+import config
 
 from tornado.options import define, options
 define("port", default=8000, help="run on given port", type=int)
@@ -25,14 +26,63 @@ class Application(tornado.web.Application):
         tornado.web.Application.__init__(self, handlers, **settings)
 
 class ListHandler(tornado.web.RequestHandler):
-    def getArticles(self, theme_articles):
-        listArticle={}
-        for theme in theme_articles:
-            if (theme['type']==input[::-1]):
-                listArticle = theme['articles']
-        return listArticle
+    def getArticles(self, themeArticles, articlesType):
+        listArticles=[]
+        for theme in themeArticles:
+            if (theme['type']==articlesType):
+                listArticles = theme['articles']
+        return listArticles
 
-    def get(self, input):
+    def getShowArticlesNum(self, currentNum, sum):
+        endNum = currentNum + config.pageSize
+        if (endNum>=sum):
+            endNum=sum
+        return endNum
+
+    def getThemeName(self,themeId):
+        themeName = config.themesType[themeId]
+        if (themeName==None):
+            themeName=""
+        return themeName
+
+    def str2Int(self, strElement):
+        try:
+            intElement=int(strElement)
+        except:
+            intElement=0
+        return intElement
+
+    def getImf(self, inputImf):
+        inputDict={}
+        inputArray = inputImf.split('_')
+        if len(inputArray) > 1:
+            inputDict['articlesType'] = inputArray[1]
+            inputDict['startPage'] = inputArray[0]
+        else:
+            inputDict['articlesType'] = inputArray[1]
+            inputDict['startPage'] = "0"
+        return inputDict
+
+    def getEndPage(self, start, sum):
+        max = (sum+config.pageSize-1)/config.pageSize
+        if (start>=max):
+            max=start
+            end=max
+        elif((start + config.pageLimit)>=max):
+            end=max
+        else:
+            end = start + config.pageLimit
+        pages=[start, end, max]
+        return pages
+
+    def addArticles_test(self, array, times):
+        array_test=[]
+        for i in range(0, times):
+            for element in array:
+                array_test.append(element)
+        return array_test
+
+    def getThemeArticles_test(self):
         theme_articles=[
             {
                 "type":0,
@@ -57,20 +107,42 @@ class ListHandler(tornado.web.RequestHandler):
                 ]
             },
         ]
-        listArticle=getArticles(theme_articles)
+        return theme_articles
+
+    def get(self, input):
+        inputImf = input[::-1]
+        inputDict = self.getImf(inputImf)
+        articlesType = inputDict['articlesType']
+        startPage = inputDict['startPage']
+        startPageInt = self.str2Int(startPage)
+        themeArticles = self.getThemeArticles_test()
+        listArticles = self.getArticles(themeArticles, int(articlesType))
+        listArticles = self.addArticles_test(listArticles,config.times)
+        startNum = (startPageInt-1)*config.pageSize
+        endNum = self.getShowArticlesNum(startNum, len(listArticles))
+        themeName = self.getThemeName(articlesType)
+        pages = self.getEndPage(startPageInt, len(listArticles))
+        '''
         self.render(
             "list.html",
+            listArticles=listArticles,
+            start=startNum,
+            end=endNum,
+            themeName=themeName,
+            pages=pages,
+            sum=len(listArticles),
+            urls=config.urls,
+            articlesType=articlesType,
         )
+        '''
+        self.write(str(inputImf)+" "+str(articlesType)+" "+str(startPage)+str(startNum)+' '+str(endNum)+' '+str(pages[0])+str(pages[1])+str(pages[2])+themeName+str(len(listArticles))+' '+str(listArticles))
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render(
             "index.html",
             page_title = "About Love",
-            urls={
-                "list_url":"http://115.159.116.153:8000/list",
-                "article_url":"http://115.159.116.153:8000/article"
-            },
+            urls=config.urls,
             themes=[
                     {
                         "title":"精品文章",
