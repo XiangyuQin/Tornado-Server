@@ -56,23 +56,29 @@ class ListHandler(tornado.web.RequestHandler):
         inputDict={}
         inputArray = inputImf.split('_')
         if len(inputArray) > 1:
-            inputDict['articlesType'] = inputArray[1]
-            inputDict['startPage'] = inputArray[0]
+            inputDict['articlesType'] = inputArray[0]
+            inputDict['startPage'] = inputArray[1]
         else:
-            inputDict['articlesType'] = inputArray[1]
-            inputDict['startPage'] = "0"
+            inputDict['articlesType'] = inputArray[0]
+            inputDict['startPage'] = "1"
         return inputDict
 
-    def getEndPage(self, start, sum):
+    def getEndPage(self, page, sum):
+        head=1
         max = (sum+config.pageSize-1)/config.pageSize
-        if (start>=max):
-            max=start
-            end=max
-        elif((start + config.pageLimit)>=max):
-            end=max
-        else:
-            end = start + config.pageLimit
-        pages=[start, end, max]
+        start=head
+        end=max
+        if(max>config.pageSize):
+            left=config.pageSize/2
+            right=config.pageSize-left-1
+            if(page<left+1):
+                start=head
+            elif(page>max-right):
+                start=max-config.pageSize+1
+            else:
+                start=page-left
+            end=start+config.pageSize-1
+        pages=[start, end, max, page]
         return pages
 
     def addArticles_test(self, array, times):
@@ -110,7 +116,7 @@ class ListHandler(tornado.web.RequestHandler):
         return theme_articles
 
     def get(self, input):
-        inputImf = input[::-1]
+        inputImf = input[::1]
         inputDict = self.getImf(inputImf)
         articlesType = inputDict['articlesType']
         startPage = inputDict['startPage']
@@ -122,7 +128,6 @@ class ListHandler(tornado.web.RequestHandler):
         endNum = self.getShowArticlesNum(startNum, len(listArticles))
         themeName = self.getThemeName(articlesType)
         pages = self.getEndPage(startPageInt, len(listArticles))
-        '''
         self.render(
             "list.html",
             listArticles=listArticles,
@@ -134,8 +139,7 @@ class ListHandler(tornado.web.RequestHandler):
             urls=config.urls,
             articlesType=articlesType,
         )
-        '''
-        self.write(str(inputImf)+" "+str(articlesType)+" "+str(startPage)+str(startNum)+' '+str(endNum)+' '+str(pages[0])+str(pages[1])+str(pages[2])+themeName+str(len(listArticles))+' '+str(listArticles))
+        #self.write(str(startPage)+" str(inputImf):"+str(inputImf)+" str(articlesType):"+str(articlesType)+" str(startPage):"+str(startPage)+' Num:'+str(startNum)+' '+str(endNum)+' pages:'+str(pages[0])+' '+str(pages[1])+' '+str(pages[2])+' pages len:'+str(len(pages))+' '+themeName+' '+str(len(listArticles))+' ')
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):

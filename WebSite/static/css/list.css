@@ -3,7 +3,7 @@ body{
 }
 .page_list{
     margin: 10px auto 0;
-    width: 60%;
+    width: 90%;
     height: 30px;
     /*border:1px solid black;*/
 }
@@ -13,19 +13,23 @@ ul{
     list-style:none;
 }
 ul li{
-    font-size: 18px;
+    font-size: 14px;
     margin-left: 18px;
     float: left;
 
 }
-
+ul li a span{
+    border:1px solid #474748;
+}
+ul li a span:hover{
+    border:1px solid black;
+}
 ul li a{
-    color: black;
+    color: #474748;
+
     text-decoration:none;
 }
 ul li a:hover{
-    background: #C9C9CA;
     color: black;
-    font-weight:bold;
     text-decoration:none;
 }

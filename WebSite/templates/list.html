@@ -39,12 +39,16 @@
     <div class="theme_footer">
         <div class="page_list">
             <ul>
-                {% for page in range(pages[0], pages[1]+1) %}
-                <li><a href="{{ urls['list_url'] }}/{{ articlesType }}_{{ page }}">&nbsp;&nbsp;{{ page }}&nbsp;&nbsp;</a></li>
+                {% if pages[3] > 1 %}
+                <li><a href="{{ urls['list_url'] }}/{{ articlesType }}_1">首页</a></li>
+                <li><a href="{{ urls['list_url'] }}/{{ articlesType }}_{{ pages[3]-1 }}">上一页</a></li>
                 {% end %}
-                {% if pages[1] < pages[2] %}
-                <li>……</li>
-                <li><a href="{{ urls['list_url'] }}/{{ articlesType }}_{{ page[2] }}">{{ page[2] }}</a></li>
+                {% for page in range(pages[0], pages[1]+1) %}
+                <li><a class="li_num" href="{{ urls['list_url'] }}/{{ articlesType }}_{{ page }}"><span>&nbsp;&nbsp;{{ page }}&nbsp;&nbsp;</span></a></li>
+                {% end %}
+                {% if pages[3] < pages[2] %}
+                <li><a  href="{{ urls['list_url'] }}/{{ articlesType }}_{{ pages[3]+1 }}">下一页</a></li>
+                <li><a  href="{{ urls['list_url'] }}/{{ articlesType }}_{{ pages[2] }}">尾页</a></li>
                 {% end %}
             </ul>
         </div>
