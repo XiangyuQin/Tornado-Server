@@ -3,6 +3,6 @@
         <img alt="" src="{{ pptArticle['image'] }}" onload="this.width=screen.width;">
     </div>
     <div class="slidesText">
-        <p><a href="#"> {{pptArticle['title']}}</a></p>
+        <p><a href="{{ urls['article_url'] }}/{{ pptArticle['id'] }}" target="_blank">{{ pptArticle['title'] }}</a></p>
     </div>
 </div>

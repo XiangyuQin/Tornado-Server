@@ -25,7 +25,7 @@
                 <ul class="slides">
                     {% for pptArticle in pptArticles %}
                     <li data-title="{{ pptArticle['theme'] }}">
-                        {% module PptArticle(pptArticle) %}
+                        {% module PptArticle(pptArticle, urls) %}
                     </li>
                     {% end %}
                 </ul>
@@ -46,19 +46,7 @@
             <div class="theme_content">
                 {% for listArticle in listArticles %}
                 {% if listArticle["type_id"] == theme["theme_id"] %}
-                <div class="item">
-                    <div class="image">
-                        <img src="{{ listArticle['image'] }}" alt="cover2" onload="this.width=screen.width;"/>
-                    </div>
-                    <div class="text">
-                        <div class="title">
-                            <h2>{{ listArticle["title"] }}</h2>
-                        </div>
-                        <div class="brief">
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ listArticle["brief"] }}</p>
-                        </div>
-                    </div>
-                </div>
+                {% module ListArticle(listArticle, urls) %}
                 {% end %}
                 {% end %}
             </div>

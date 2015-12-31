@@ -19,19 +19,7 @@
         <div class="theme_content">
             {% for num in range(start, end) %}
             {% if num < sum %}
-            <div class="item">
-                <div class="image">
-                    <img src="{{ listArticles[num]['image'] }}" alt="cover2" onload="this.width=screen.width;"/>
-                </div>
-                <div class="text">
-                    <div class="title">
-                        <h2>{{ listArticles[num]['title'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ num }}</h2>
-                    </div>
-                    <div class="brief">
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ listArticles[num]['brief'] }}</p>
-                    </div>
-                </div>
-            </div>
+            {% module ListArticle(listArticles[num], urls) %}
             {% end %}
             {% end %}
         </div>
