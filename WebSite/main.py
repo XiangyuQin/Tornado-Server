@@ -4,7 +4,6 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import os.path
-import MySQLdb
 
 import config
 from MainHandler import MainHandler

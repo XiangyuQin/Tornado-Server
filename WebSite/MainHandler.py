@@ -1,57 +1,44 @@
 # -*- coding:utf-8 -*-
 import tornado.web
 import config
+from MongoService import MongoService
 
 class MainHandler(tornado.web.RequestHandler):
+    def mergeArticleAndThemes(self, themes_array, pptArticles_array):
+        array=[]
+        for pptArticle in pptArticles_array:
+            for theme in themes_array:
+                if(theme["theme_id"]==pptArticle["type_id"]):
+                    pptArticle["theme"]=theme["title"]
+                    break
+        return pptArticles_array
+
+    def getArticles(self, themes_array, limits):
+        mongoService=MongoService()
+        array=[]
+        for theme in themes_array:
+            listArticles=mongoService.getMainArticles(theme["theme_id"], config.MainArticlesNumber)
+            array.extend(listArticles)
+        return array
+
+    def getThemes(self, themes):
+        mongoService=MongoService()
+        return mongoService.getThemes(themes)
+
     def get(self):
+        themes_array=self.getThemes(config.mainThemes)
+        pptThemes_array=self.getThemes(config.pptThemes)
+        listArticles_array=self.getArticles(themes_array, config.MainArticlesNumber)
+        pptArticles_array=self.getArticles(pptThemes_array, config.PptArticlesNumber)
+        pptArticles_array=self.mergeArticleAndThemes(pptThemes_array, pptArticles_array)
         self.render(
             "index.html",
-            page_title = "About Love",
+            page_title = config.WebTitle,
             urls=config.urls,
-            themes=[
-                    {
-                        "title":"精品文章",
-                        "theme_id":"0"
-                    },
-                    {
-                        "title":"精品文章2",
-                        "theme_id":"1"
-                    },
-            ],
-            listArticles=[
-                    {
-                        "title":"一个“好人”如何去挽回失去的爱情",
-                        "image":"/static/images/website4.jpg",
-                        "brief":"第一，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
-                        "type_id":"0",
-                        "id":"102"
-                    },
-                    {
-                        "title":"一个“好人”如何去挽回失去的爱情2",
-                        "image":"/static/images/website5.jpg",
-                        "brief":" 第二，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
-                        "type_id":"1",
-                        "id":"103"
-                    },
-            ],
-            pptArticles=[
-                    {
-                        "title":"Programming Collective Intelligence",
-                        "image":"/static/images/website1.jpg",
-                        "theme":"主题1",
-                        "id":"103"
-                    },
-                    {
-                         "title":"Programming Collective Intelligence2",
-                         "image":"/static/images/website2.jpg",
-                         "theme":"主题2",
-                         "id":"102"
-                    },
-                    {
-                         "title":"Programming Collective Intelligence3",
-                         "image":"/static/images/website3.jpg",
-                         "theme":"主题3",
-                         "id":"101"
-                    },
-            ]
+            themes=themes_array,
+            listArticles=listArticles_array,
+            pptArticles=pptArticles_array
         )
+        '''
+        self.write(str(pptArticles_array))
+        '''

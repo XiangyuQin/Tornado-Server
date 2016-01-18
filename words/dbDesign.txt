@@ -1,0 +1,115 @@
+数据库设计：
+推荐类型：
+	0：推荐
+	1：类型1
+	2：类型2
+	3：类型3
+ppt头条类型：主题1，主题2，主题3
+数据库名：webSite
+数据库设计文档结构
+	文章doc：articles
+	    article={
+			"id":"(not null, signal)",
+            "title":"(not null)",
+            "image":"/static/images/website5.jpg(not null)",
+            "date":new Date(2016, 0, 16),
+            "brief":"现在有的只有厌烦，之前的所有兴趣都成为过去。(not null)",
+            "type_id":"1(not null)",
+            "writer":"aboutLove(not null)",
+            "content":"不要纠结于过去，承认你们的关系已经破裂。(not null)"
+			"rankingScore":0.9
+        }
+	主题doc：themes
+		theme={
+			"theme_id":(not null, signal)
+			"title":(not null, signal)
+		}
+
+数据库设计文档结构依据：		
+Article文章页：
+        article={
+            "title":"一个“好人”如何去挽回失去的爱情2",
+            "image":"/static/images/website5.jpg",
+            "date":"2015-7-07",
+            "brief":"第一，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+            "type_id":"1",
+            "writer":"aboutLove",
+            "content":"不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。"
+        }
+
+list文章：
+        theme_articles=[
+            {
+                "type":0,
+                "articles":[
+                    {
+                        "title":"一个“好人”如何去挽回失去的爱情",
+                        "image":"/static/images/website4.jpg",
+                        "brief":"第一，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+                        "type_id":"0",
+                        "id":"100"
+                    },
+                ]
+            },
+            {
+                "type":1,
+                "articles":[
+                    {
+                        "title":"一个“好人”如何去挽回失去的爱情2",
+                        "image":"/static/images/website5.jpg",
+                        "brief":"第一，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+                        "type_id":"1",
+                        "id":"101"
+                    },
+                ]
+            },
+        ]
+		
+		
+主页文章：
+            themes=[
+                    {
+                        "title":"精品文章",
+                        "theme_id":"0"
+                    },
+                    {
+                        "title":"精品文章2",
+                        "theme_id":"1"
+                    },
+            ],
+            listArticles=[
+                    {
+                        "title":"一个“好人”如何去挽回失去的爱情",
+                        "image":"/static/images/website4.jpg",
+                        "brief":"第一，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+                        "type_id":"0",
+                        "id":"102"
+                    },
+                    {
+                        "title":"一个“好人”如何去挽回失去的爱情2",
+                        "image":"/static/images/website5.jpg",
+                        "brief":" 第二，不要纠结于过去，承认你们的关系已经破裂。盗哥讲过，不要把过去的承诺拿到现在来用，一切的承诺仅仅限于女孩对你当时的感觉和情绪。感觉和情绪一去不复返， 现在有的只有厌烦，之前的所有兴趣都成为过去。承认关系已经破裂，你现在需要做的不是纠缠，而是想如何正确的去修复……",
+                        "type_id":"1",
+                        "id":"103"
+                    },
+            ],
+            pptArticles=[
+                    {
+                        "title":"Programming Collective Intelligence",
+                        "image":"/static/images/website1.jpg",
+                        "theme":"主题1",
+                        "id":"103"
+                    },
+                    {
+                         "title":"Programming Collective Intelligence2",
+                         "image":"/static/images/website2.jpg",
+                         "theme":"主题2",
+                         "id":"102"
+                    },
+                    {
+                         "title":"Programming Collective Intelligence3",
+                         "image":"/static/images/website3.jpg",
+                         "theme":"主题3",
+                         "id":"101"
+                    },
+            ]
