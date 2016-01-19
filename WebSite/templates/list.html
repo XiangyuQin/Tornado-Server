@@ -2,7 +2,7 @@
 <html lang="en">
 {% block head %}
 <meta charset="UTF-8">
-<title>{{ themeName }}</title>
+<title>{{ themeTitle }}</title>
 <link rel="stylesheet" type="text/css" href="{{ static_url('css/list.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ static_url('css/style.css')}}" />
 {% end %}
@@ -14,13 +14,11 @@
 <div class="main">
     <div class="theme">
         <div class="theme_name">
-            <h1>{{ themeName }}</h1>
+            <h1>{{ themeTitle }}</h1>
         </div>
         <div class="theme_content">
-            {% for num in range(start, end) %}
-            {% if num < sum %}
-            {% module ListArticle(listArticles[num], urls) %}
-            {% end %}
+            {% for listArticle in listArticles %}
+            {% module ListArticle(listArticle, urls) %}
             {% end %}
         </div>
     </div>

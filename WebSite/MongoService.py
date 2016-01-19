@@ -17,6 +17,14 @@ class MongoService(object):
             array.append(doc)
         return array
 
+    def getThemeTitle(self, id):
+        cursor = self.db.themes
+        doc = cursor.find_one({"theme_id":id})
+        if doc:
+            return doc["title"]
+        else:
+            return ""
+
     def getMainArticles(self, type, limit):
         cursor = self.db.articles
         cursor_doc = cursor.find({"type_id":type}).sort([("rankingScore", pymongo.DESCENDING),("date",pymongo.DESCENDING)]).limit(limit)
@@ -34,6 +42,11 @@ class MongoService(object):
             del doc["_id"]
             array.append(doc)
         return array
+
+    def getListArticlesSum(self, type):
+        cursor = self.db.articles
+        doc = cursor.find({"type_id":type}).count()
+        return doc
 
     def getArticles(self, id):
         cursor = self.db.articles

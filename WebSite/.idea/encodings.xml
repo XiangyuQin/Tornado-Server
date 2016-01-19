@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/ArticleHandler.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ListHandler.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ListHandler_orl.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MainHandler.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Module.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MongoService.py" charset="UTF-8" />

@@ -9,14 +9,14 @@ ppt头条类型：主题1，主题2，主题3
 数据库设计文档结构
 	文章doc：articles
 	    article={
-			"id":"(not null, signal)",
+			"id":"8",
             "title":"(not null)",
             "image":"/static/images/website5.jpg(not null)",
             "date":new Date(2016, 0, 16),
             "brief":"现在有的只有厌烦，之前的所有兴趣都成为过去。(not null)",
-            "type_id":"1(not null)",
+            "type_id":"1",
             "writer":"aboutLove(not null)",
-            "content":"不要纠结于过去，承认你们的关系已经破裂。(not null)"
+            "content":"不要纠结于过去，承认你们的关系已经破裂。(not null)",
 			"rankingScore":0.9
         }
 	主题doc：themes

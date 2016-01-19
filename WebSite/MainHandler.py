@@ -13,6 +13,11 @@ class MainHandler(tornado.web.RequestHandler):
                     break
         return pptArticles_array
 
+    def getArticlesSum(self, type):
+        mongoService=MongoService()
+        sum = mongoService.getListArticlesSum(type)
+        return sum
+
     def getArticles(self, themes_array, limits):
         mongoService=MongoService()
         array=[]
