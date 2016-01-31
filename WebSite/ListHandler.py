@@ -68,7 +68,7 @@ class ListHandler(tornado.web.RequestHandler):
         themeTitle = self.getThemeTitle(articlesType)
         sum = self.getListArticlesSum(articlesType)
         #listArticles = self.addArticles_test(listArticles, config.times)
-        pages = self.getEndPage(startPageInt, sum*10)
+        pages = self.getEndPage(startPageInt, sum)
         self.render(
             "list.html",
             listArticles=listArticles,

@@ -50,7 +50,7 @@ class MongoService(object):
 
     def getArticles(self, id):
         cursor = self.db.articles
-        cursor_doc = cursor.find_one({"id":id})
+        cursor_doc = cursor.find_one({"id":int(id)})
         if cursor_doc:
             del cursor_doc["_id"]
             return cursor_doc

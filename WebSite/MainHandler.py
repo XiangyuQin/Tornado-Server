@@ -22,7 +22,7 @@ class MainHandler(tornado.web.RequestHandler):
         mongoService=MongoService()
         array=[]
         for theme in themes_array:
-            listArticles=mongoService.getMainArticles(theme["theme_id"], config.MainArticlesNumber)
+            listArticles=mongoService.getMainArticles(theme["theme_id"], limits)
             array.extend(listArticles)
         return array
 
