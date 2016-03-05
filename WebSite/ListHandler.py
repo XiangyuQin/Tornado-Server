@@ -9,7 +9,8 @@ class ListHandler(tornado.web.RequestHandler):
         mongoService=MongoService()
         listArticles=[]
         start = (startPage-1)*config.pageSize
-        listArticles=mongoService.getListArticles(type, start, limit)
+        mark = common.getMark()
+        listArticles=mongoService.getListArticles(type, start, limit, mark)
         return listArticles
 
     def getThemeTitle(self,themeId):
@@ -47,8 +48,9 @@ class ListHandler(tornado.web.RequestHandler):
         return pages
 
     def getListArticlesSum(self, type):
+        mark = common.getMark()
         mongoService=MongoService()
-        sum = mongoService.getListArticlesSum(type)
+        sum = mongoService.getListArticlesSum(type, mark)
         return sum
 
     def addArticles_test(self, array, times):

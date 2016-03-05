@@ -25,8 +25,8 @@ class MongoService(object):
         else:
             return ""
 
-    def getMainArticles(self, type, limit):
-        cursor = self.db.articles
+    def getMainArticles(self, type, limit, mark):
+        cursor = self.getCursor(mark)
         cursor_doc = cursor.find({"type_id":type}).sort([("rankingScore", pymongo.DESCENDING),("date",pymongo.DESCENDING)]).limit(limit)
         array=[]
         for doc in cursor_doc:
@@ -34,8 +34,8 @@ class MongoService(object):
             array.append(doc)
         return array
 
-    def getListArticles(self, type, skip, limit):
-        cursor = self.db.articles
+    def getListArticles(self, type, skip, limit, mark):
+        cursor = self.getCursor(mark)
         cursor_doc = cursor.find({"type_id":type}).sort([("rankingScore", pymongo.DESCENDING),("date",pymongo.DESCENDING)]).skip(skip).limit(limit)
         array=[]
         for doc in cursor_doc:
@@ -43,13 +43,13 @@ class MongoService(object):
             array.append(doc)
         return array
 
-    def getListArticlesSum(self, type):
-        cursor = self.db.articles
+    def getListArticlesSum(self, type, mark):
+        cursor = self.getCursor(mark)
         doc = cursor.find({"type_id":type}).count()
         return doc
 
-    def getArticles(self, id):
-        cursor = self.db.articles
+    def getArticles(self, id, mark):
+        cursor = self.getCursor(mark)
         cursor_doc = cursor.find_one({"id":int(id)})
         if cursor_doc:
             del cursor_doc["_id"]
@@ -57,3 +57,10 @@ class MongoService(object):
         else:
             cursor_doc={}
             return cursor_doc
+    
+    def getCursor(self, mark):
+        if mark=="A":
+            cursor = self.db.articlesA
+        else:
+            cursor = self.db.articlesB
+        return cursor

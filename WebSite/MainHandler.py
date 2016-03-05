@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import tornado.web
 import config
+import common
 from MongoService import MongoService
 
 class MainHandler(tornado.web.RequestHandler):
@@ -15,14 +16,16 @@ class MainHandler(tornado.web.RequestHandler):
 
     def getArticlesSum(self, type):
         mongoService=MongoService()
-        sum = mongoService.getListArticlesSum(type)
+        mark = common.getMark()
+        sum = mongoService.getListArticlesSum(type, mark)
         return sum
 
     def getArticles(self, themes_array, limits):
         mongoService=MongoService()
         array=[]
+        mark = common.getMark()
         for theme in themes_array:
-            listArticles=mongoService.getMainArticles(theme["theme_id"], limits)
+            listArticles=mongoService.getMainArticles(theme["theme_id"], limits, mark)
             array.extend(listArticles)
         return array
 
